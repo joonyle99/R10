@@ -7,6 +7,7 @@
 /[Uu]ser[Ss]ettings/
 
 # Visual Studio / VS Code 관련 파일
+.vsconfig
 .vscode/
 .vs/
 *.csproj
