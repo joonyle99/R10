@@ -9,10 +9,12 @@ public sealed class FlyingEnemyBehaviour : EnemyBehaviour
     [SerializeField] private float _detectionRange = 5f;
     [SerializeField] private float _loseRange = 7f;
     [SerializeField] private float _chaseSpeed = 3f;
+    [SerializeField] private float _stopRange = 1f;
 
     public float DetectionRange => _detectionRange;
     public float LoseRange => _loseRange;
     public float ChaseSpeed => _chaseSpeed;
+    public float StopRange => _stopRange;
 
     protected override void OnInitialize()
     {
@@ -50,6 +52,9 @@ public sealed class FlyingEnemyBehaviour : EnemyBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _loseRange);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, _stopRange);
     }
 #endif
 }

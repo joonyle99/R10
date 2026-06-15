@@ -30,9 +30,16 @@ public sealed class FlyingEnemyChasingState : StateBase<FlyingEnemyBehaviour>
             return;
         }
 
-        var direction = ((Vector2)player.transform.position - (Vector2)owner.transform.position).normalized;
-        var isFacingRight = direction.x > 0f;
-        owner.Rigid.linearVelocity = direction * owner.ChaseSpeed;
+        var toPlayer = (Vector2)player.transform.position - (Vector2)owner.transform.position;
+        var isFacingRight = toPlayer.x > 0f;
         owner.SetFacingDir(isFacingRight);
+
+        if (toPlayer.magnitude <= owner.StopRange)
+        {
+            owner.Rigid.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        owner.Rigid.linearVelocity = toPlayer.normalized * owner.ChaseSpeed;
     }
 }
