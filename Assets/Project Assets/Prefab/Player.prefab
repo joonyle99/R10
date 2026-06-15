@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 2523672327754088011}
   - component: {fileID: 2383278534037286708}
   m_Layer: 0
-  m_Name: Aiming Line
+  m_Name: Aim Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342,7 +342,7 @@ LineRenderer:
       m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
+    numCornerVertices: 90
     numCapVertices: 0
     alignment: 0
     textureMode: 1
@@ -502,8 +502,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBehaviour
   maxHp: 5
-  _launchHitPauseDuration: 0.15
-  _bounceHitPauseDuration: 0.15
+  _launchPauseDuration: 0.06
+  _bouncePauseDuration: 0.05
+  _enemyHitPauseDuration: 0.06
   _knockbackX: 12
   _knockbackY: 8
   _invincibleDuration: 1.5
