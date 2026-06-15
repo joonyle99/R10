@@ -27,17 +27,19 @@ public sealed class PlayerBehaviour : SlingEntity
 
     [SerializeField] private float _knockbackX = 12f;
     [SerializeField] private float _knockbackY = 8f;
+    [SerializeField] private float _stunDuration = 1f;
     [SerializeField] private float _invincibleDuration = 1.5f;
     [SerializeField] private float _blinkInterval = 0.08f;
 
-    [Header("Propulsion Judgment")] 
-    [SerializeField] private float _propelHighThresholdSqr = 120f; // Propelled 상태로 진입하는 속도² 임계값 (히스테리시스 밴드)
-    [SerializeField] private float _propelLowThresholdSqr = 80f; //  Drifting 상태로 탈출하는 속도² 임계값
+    public float StunDuration => _stunDuration;
+
+    [Header("Propulsion Judgment")]
     [SerializeField] private float _propelGraceDuration = 0.3f;
 
-    private bool _isPropelled;
     private float _propelGraceTimer;
-    public bool IsPropelled => _isPropelled;
+    public bool IsPropelled => _propelGraceTimer > 0f;
+
+    public bool IsRecoveringFromStun { get; set; }
 
     private ComboSystem _combo;
     public ComboSystem Combo => _combo;
@@ -243,6 +245,13 @@ public sealed class PlayerBehaviour : SlingEntity
     {
         if (IsInvincible) return;
         _combo.Reset();
+
+        var dirX = Rigid.position.x >= enemy.Rigid.position.x ? 1f : -1f;
+        Rigid.linearVelocity = new Vector2(dirX * _knockbackX, _knockbackY);
+
+        if (_invincibleCoroutine != null) StopCoroutine(_invincibleCoroutine);
+        _invincibleCoroutine = StartCoroutine(InvincibleRoutine());
+
         ChangeState<PlayerStunState>();
     }
 
@@ -250,6 +259,8 @@ public sealed class PlayerBehaviour : SlingEntity
     {
         _propelGraceTimer = _propelGraceDuration;
     }
+
+    public void ClearPropulsion() => _propelGraceTimer = 0f;
 
     // ========= ... =========
 
@@ -262,21 +273,11 @@ public sealed class PlayerBehaviour : SlingEntity
 
     private void UpdatePropelState(float deltaTime)
     {
-        _propelGraceTimer -= deltaTime;
-
         if (_propelGraceTimer > 0f)
-        {
-            _isPropelled = true;
-        }
-        else
-        {
-            var sqr = Rigid.linearVelocity.sqrMagnitude;
-            if (sqr > _propelHighThresholdSqr) _isPropelled = true;
-            if (sqr < _propelLowThresholdSqr) _isPropelled = false;
-        }
+            _propelGraceTimer -= deltaTime;
 
 #if UNITY_EDITOR
-        SpriteRenderer.color = _isPropelled ? Color.red : Color.gray;
+        SpriteRenderer.color = IsPropelled ? Color.red : Color.white;
 #endif
     }
 
@@ -322,7 +323,16 @@ public sealed class PlayerBehaviour : SlingEntity
         if (IsDead) return;
         if (!collider.TryGetComponent<EnemyBehaviour>(out var enemy) || enemy.IsDead) return;
 
-        if (_isPropelled) OnPropelledHit(enemy);
+        if (IsPropelled) OnPropelledHit(enemy);
+        else OnDriftingHit(enemy);
+    }
+
+    private void OnTriggerStay2D(Collider2D collider)
+    {
+        if (IsDead) return;
+        if (!collider.TryGetComponent<EnemyBehaviour>(out var enemy) || enemy.IsDead) return;
+
+        if (IsPropelled) OnPropelledHit(enemy);
         else OnDriftingHit(enemy);
     }
 }

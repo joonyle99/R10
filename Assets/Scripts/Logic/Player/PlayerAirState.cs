@@ -22,7 +22,8 @@ public sealed class PlayerAirState : StateBase<PlayerBehaviour>
         _rigid  = sling.Rigid;
         _config = sling.Config;
 
-        _bonusKicksLeft = _config.bonusKickCount;
+        _bonusKicksLeft = owner.IsRecoveringFromStun ? 0 : _config.bonusKickCount;
+        owner.IsRecoveringFromStun = false;
 
         if (sling.ConsumeSling())
         {
@@ -97,13 +98,14 @@ public sealed class PlayerAirState : StateBase<PlayerBehaviour>
 
             if (SlingSimulator.CanBounce(in _budget, _config))
             {
-                // 예산 킥: 조준선이 예측한 튕김
+                // 예산 킥: 조준선이 예측한 튕김 — 추진 상태 유지
                 SlingSimulator.Bounce(ref _budget, normal, _config);
                 WallKick(owner, _budget.Velocity);
+                owner.OnSlingLaunched();
             }
             else if (_bonusKicksLeft > 0)
             {
-                // 보너스 킥: 예산이 소진돼도 벽에 닿으면 추가 점프 — 조준선에는 표시되지 않는 규칙
+                // 보너스 킥: 예산이 소진돼도 벽에 닿으면 추가 점프 — 조준선에는 표시되지 않는 규칙, 추진 상태 부여 안 함
                 _bonusKicksLeft--;
                 WallKick(owner, SlingSimulator.Kick(normal, _config.kick));
             }
