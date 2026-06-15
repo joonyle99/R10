@@ -6,8 +6,9 @@ public class SlingConfig : ScriptableObject
     [System.Serializable]
     public struct KickConfig
     {
-        [Range(0f, 90f)] public float angle; // 벽 킥 각도: 0 = 벽 반대편 수평, 90 = 수직 위
         public float speed;
+        [Range(0f, 90f)] public float angle; // 벽 킥 각도: 0 = 벽 반대편 수평, 90 = 수직 위
+        [Range(0f, 1f)] public float velocityBlend; // 0 = 고정 킥 방향, 1 = 완전 물리 반사
     }
 
     public float slingGravity = 30f;

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 619baba91b2fc834dad2bc8fd6df9c20, type: 3}
   m_Name: SlingConfig
   m_EditorClassIdentifier: Assembly-CSharp::ShotConfig
-  slingGravity: 120
-  slingSpeed: 70
-  slingTime: 0.2
-  bonusTime: 0.1
+  slingGravity: 80
+  slingSpeed: 50
+  slingTime: 0.4
+  bonusTime: 0.15
   wallAngleThreshold: 10
   groundShotMaxAngle: 10
   groundShotAimLineLength: 3

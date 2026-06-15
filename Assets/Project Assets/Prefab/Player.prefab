@@ -502,16 +502,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBehaviour
   maxHp: 5
-  _launchPauseDuration: 0.06
-  _bouncePauseDuration: 0.05
+  _launchPauseDuration: 0.1
+  _bouncePauseDuration: 0.2
   _enemyHitPauseDuration: 0.06
   _knockbackX: 12
   _knockbackY: 8
+  _stunDuration: 1
   _invincibleDuration: 1.5
-  _blinkInterval: 0.08
-  _propelHighThresholdSqr: 120
-  _propelLowThresholdSqr: 30
-  _propelGraceDuration: 0.3
+  _blinkInterval: 0.1
+  _propelGraceDuration: 0.5
 --- !u!114 &1848701631826351291
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public sealed class PlayerAimState : StateBase<PlayerBehaviour>
 
     public override void Enter(PlayerBehaviour owner)
     {
+        // _lastDragOffset = Vector2.zero;
         owner.PlayerDisplay.BeginAimPreview();
         if (owner.FSM.PrevState is PlayerGroundState)
             owner.SquashStretch.HoldSoftSquash();
