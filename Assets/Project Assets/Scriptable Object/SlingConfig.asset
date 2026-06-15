@@ -28,5 +28,6 @@ MonoBehaviour:
   wallRepelSpeed: 5
   baseCharges: 2
   kick:
-    angle: 70
     speed: 30
+    angle: 70
+    velocityBlend: 1
