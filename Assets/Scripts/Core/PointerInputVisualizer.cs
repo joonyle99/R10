@@ -61,6 +61,9 @@ public class PointerInputVisualizer : MonoBehaviour
             return;
         }
 
+        if (!_pressMarker.gameObject.activeSelf)
+            InitPressMarker();
+
         var isDragging = _pointerInput.IsDragging;
         _text.gameObject.SetActive(!isDragging);
 
@@ -83,7 +86,11 @@ public class PointerInputVisualizer : MonoBehaviour
     private void OnPress(Vector2 worldPos)
     {
         if (_canAim != null && !_canAim()) return;
+        InitPressMarker();
+    }
 
+    private void InitPressMarker()
+    {
         _pressScreenPos = _pointerInput.GetScreenPos;
         _currLeanOffset = Vector2.zero;
 

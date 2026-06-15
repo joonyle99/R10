@@ -5,6 +5,7 @@ public sealed class PlayerGroundState : StateBase<PlayerBehaviour>
 {
     public override void Enter(PlayerBehaviour owner)
     {
+        owner.ClearPropulsion();
         owner.SlingBehaviour.RestoreCharges(); // 착지 시 차지 풀회복
 
         owner.SquashStretch.SetContactSurface(ContactSurface.Ground);
